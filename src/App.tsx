@@ -9,6 +9,7 @@ import ChevronRightIcon from "./assets/icons/chevron-right.svg?react";
 import ChevronLeftIcon from "./assets/icons/chevron-left.svg?react";
 import SearchIcon from "./assets/icons/search.svg?react";
 import InputCheckbox from "./components/input-checkbox";
+import InputSingleFile from "./components/input-single-file";
 
 export default function App() {
   return (
@@ -58,6 +59,10 @@ export default function App() {
       </div>
       <div>
         <InputCheckbox />
+      </div>
+
+      <div>
+        <InputSingleFile />
       </div>
     </div>
   );
