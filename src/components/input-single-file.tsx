@@ -42,6 +42,7 @@ interface InputSingleFileProps
   form: any;
   allowedExtensions: string[];
   maxFileSizeInMB: number;
+  replaceBy: React.ReactNode;
   error?: React.ReactNode;
 }
 
@@ -51,6 +52,7 @@ export default function InputSingleFile({
   error,
   allowedExtensions,
   maxFileSizeInMB,
+  replaceBy,
   ...props
 }: InputSingleFileProps) {
   const formValues = useWatch({ control: form.control });
@@ -125,7 +127,8 @@ export default function InputSingleFile({
         </>
       ) : (
         <>
-          {" "}
+          {replaceBy}
+
           <div className="flex gap-3 items-center border border-solid border-border-primary mt-5 p-3 rounded">
             <Icon svg={FileIconImage} className="fill-white w-6 h-6" />
             <div className="flex flex-col">
