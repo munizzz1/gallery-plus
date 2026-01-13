@@ -1,5 +1,14 @@
 import { useForm } from "react-hook-form";
 
+import {
+  Dialog,
+  DialogBody,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTrigger,
+  DialogClose,
+} from "./components/dialog";
 import ImageFilePreview from "./components/image-file-preview";
 import InputSingleFile from "./components/input-single-file";
 import InputCheckbox from "./components/input-checkbox";
@@ -9,6 +18,7 @@ import Divider from "./components/divider";
 import Button from "./components/button";
 import Badge from "./components/badge";
 import Alert from "./components/alert";
+import Text from "./components/text";
 
 import ChevronRightIcon from "./assets/icons/chevron-right.svg?react";
 import ChevronLeftIcon from "./assets/icons/chevron-left.svg?react";
@@ -69,13 +79,34 @@ export default function App() {
       </div>
 
       <div>
-        <InputSingleFile
-          form={form}
-          allowedExtensions={["png", "jpg", "jpeg", "webp"]}
-          maxFileSizeInMB={50}
-          replaceBy={<ImageFilePreview src={fileSource} alt="Image" />}
-          {...form.register("file")}
-        />
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button>Abrir Modal</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>Test Dialog</DialogHeader>
+
+            <DialogBody>
+              <Text as="div" className="mb-4">
+                Test Body
+              </Text>
+              <InputSingleFile
+                form={form}
+                allowedExtensions={["png", "jpg", "jpeg", "webp"]}
+                maxFileSizeInMB={50}
+                replaceBy={<ImageFilePreview src={fileSource} alt="Image" />}
+                {...form.register("file")}
+              />
+            </DialogBody>
+
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button variant="secondary">Cancelar</Button>
+              </DialogClose>
+              <Button>Adicionar</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
