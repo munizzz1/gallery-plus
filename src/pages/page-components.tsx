@@ -9,9 +9,9 @@ import {
   DialogTrigger,
   DialogClose,
 } from "../components/dialog";
-import ImageFilePreview from "../components/image-file-preview";
 import InputSingleFile from "../components/input-single-file";
 import InputCheckbox from "../components/input-checkbox";
+import ImagePreview from "../components/image-preview";
 import ButtonIcon from "../components/button-icon";
 import InputText from "../components/input-text";
 import Divider from "../components/divider";
@@ -94,7 +94,7 @@ export default function PageComponents() {
                 form={form}
                 allowedExtensions={["png", "jpg", "jpeg", "webp"]}
                 maxFileSizeInMB={50}
-                replaceBy={<ImageFilePreview src={fileSource} alt="Image" />}
+                replaceBy={<ImagePreview src={fileSource} alt="Image" />}
                 {...form.register("file")}
               />
             </DialogBody>
