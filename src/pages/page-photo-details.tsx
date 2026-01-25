@@ -53,7 +53,6 @@ export default function PagePhotoDetails() {
             </>
           ) : (
             <>
-              {" "}
               <Skeleton className="h-[21rem]" />
               <Skeleton className="w-20 h-10" />
             </>
