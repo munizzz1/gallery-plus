@@ -21,7 +21,7 @@ interface PhotoNewDialogProps {
   trigger: React.ReactNode;
 }
 
-export function PhotoNewDialog({ trigger }: PhotoNewDialogProps) {
+export default function PhotoNewDialog({ trigger }: PhotoNewDialogProps) {
   const form = useForm();
 
   const isLoadingAlbum = false;

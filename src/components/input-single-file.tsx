@@ -37,7 +37,8 @@ export const inputSingleFileIconVariants = tv({
 });
 
 interface InputSingleFileProps
-  extends VariantProps<typeof inputSingleFileVariants>,
+  extends
+    VariantProps<typeof inputSingleFileVariants>,
     Omit<React.ComponentProps<"input">, "size"> {
   form: any;
   allowedExtensions: string[];
@@ -60,7 +61,7 @@ export default function InputSingleFile({
 
   const formFile: File = React.useMemo(
     () => formValues[name]?.[0],
-    [formValues, name]
+    [formValues, name],
   );
 
   const { fileExtension, fileSize } = React.useMemo(
@@ -68,7 +69,7 @@ export default function InputSingleFile({
       fileExtension: formFile?.name?.split(".")?.pop()?.toLowerCase() || "",
       fileSize: formFile?.size || 0,
     }),
-    [formFile]
+    [formFile],
   );
 
   function isValidExtension() {
