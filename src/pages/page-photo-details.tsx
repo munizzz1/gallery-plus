@@ -1,5 +1,6 @@
 import { useParams } from "react-router";
 
+import { AlbumsListSelectable } from "../contexts/albums/components/albums-list-selectable";
 import type { Photo } from "../contexts/photos/models/photo";
 
 import PhotosNavigator from "../contexts/albums/components/photos-navigator";
@@ -8,7 +9,6 @@ import Container from "../components/container";
 import Skeleton from "../components/skeleton";
 import Button from "../components/button";
 import Text from "../components/text";
-import { AlbumsListSelectable } from "../contexts/albums/components/albums-list-selectable";
 
 export default function PagePhotoDetails() {
   const { id } = useParams();
