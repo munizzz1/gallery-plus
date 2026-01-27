@@ -1,4 +1,4 @@
-import ImagePreview from "../../../components/image-preview";
+import PhotoImageSelectable from "../../photos/components/photo-image-selectable";
 import InputText from "../../../components/input-text";
 import Skeleton from "../../../components/skeleton";
 import Button from "../../../components/button";
@@ -36,6 +36,10 @@ export default function AlbumNewDialog({ trigger }: AlbumNewDialogProps) {
     },
   ];
 
+  function handleTogglePhoto(selected: boolean, photoId: string) {
+    console.log(selected, photoId);
+  }
+
   return (
     <Dialog>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
@@ -53,11 +57,14 @@ export default function AlbumNewDialog({ trigger }: AlbumNewDialogProps) {
             {!isLoadingPhotos && photos.length > 0 && (
               <div className="flex flex-wrap gap-2">
                 {photos.map((photo) => (
-                  <ImagePreview
+                  <PhotoImageSelectable
                     key={photo.id}
                     src={`/images/${photo.imageId}`}
                     title={photo.title}
-                    className="w-20 h-20 roundend"
+                    imageClassName="w-20 h-20 roundend"
+                    onSelectImage={(selected) =>
+                      handleTogglePhoto(selected, photo.id)
+                    }
                   />
                 ))}
               </div>
@@ -86,7 +93,7 @@ export default function AlbumNewDialog({ trigger }: AlbumNewDialogProps) {
         </DialogBody>
 
         <DialogFooter>
-          <DialogClose>
+          <DialogClose asChild>
             <Button variant="secondary">Cancelar</Button>
           </DialogClose>
           <Button>Criar</Button>
