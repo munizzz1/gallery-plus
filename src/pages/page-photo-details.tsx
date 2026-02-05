@@ -10,21 +10,18 @@ import Skeleton from "../components/skeleton";
 import Button from "../components/button";
 import Text from "../components/text";
 
+import useAlbums from "../contexts/albums/hooks/use-albums";
+
 export default function PagePhotoDetails() {
   const { id } = useParams();
-
-  const albuns = [
-    { id: "123", title: "Album 1" },
-    { id: "1234", title: "Album 2" },
-    { id: "1235", title: "Album 3" },
-  ];
+  const { albums, isLoadingAlbums } = useAlbums();
 
   const isLoading = false;
   const photo = {
     id: "123",
     title: "Test",
     imageId: "portrait-tower.png",
-    albums: albuns,
+    albums: albums,
   } as Photo;
 
   return (
@@ -65,8 +62,8 @@ export default function PagePhotoDetails() {
           </Text>
 
           <AlbumsListSelectable
-            loading={isLoading}
-            albums={albuns}
+            loading={isLoadingAlbums}
+            albums={albums}
             photo={photo}
           />
         </div>

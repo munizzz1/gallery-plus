@@ -2,15 +2,16 @@ import AlbumsFilter from "../contexts/albums/components/albums-filter";
 import PhotosList from "../contexts/photos/components/photos-list";
 import Container from "../components/container";
 
+import useAlbums from "../contexts/albums/hooks/use-albums";
+
 export default function PageHome() {
+  const { albums, isLoadingAlbums } = useAlbums();
+
   return (
     <Container>
       <AlbumsFilter
-        albums={[
-          { id: "123", title: "Album 1" },
-          { id: "1234", title: "Album 2" },
-          { id: "1235", title: "Album 3" },
-        ]}
+        albums={albums}
+        loading={isLoadingAlbums}
         className="mb-9"
       />
       <PhotosList

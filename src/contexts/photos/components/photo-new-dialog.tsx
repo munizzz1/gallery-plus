@@ -17,20 +17,15 @@ import {
 } from "../../../components/dialog";
 import Skeleton from "../../../components/skeleton";
 
+import useAlbums from "../../albums/hooks/use-albums";
+
 interface PhotoNewDialogProps {
   trigger: React.ReactNode;
 }
 
 export default function PhotoNewDialog({ trigger }: PhotoNewDialogProps) {
   const form = useForm();
-
-  const isLoadingAlbum = false;
-
-  const albums = [
-    { id: "123", title: "Album 1" },
-    { id: "1234", title: "Album 2" },
-    { id: "1235", title: "Album 3" },
-  ];
+  const { albums, isLoadingAlbums } = useAlbums();
 
   return (
     <Dialog>
@@ -55,7 +50,7 @@ export default function PhotoNewDialog({ trigger }: PhotoNewDialogProps) {
           <div>
             <Text variant="label-small">Selecionar álbuns</Text>
             <div className="flex flex-wrap gap-3">
-              {!isLoadingAlbum &&
+              {!isLoadingAlbums &&
                 albums.length > 0 &&
                 albums.map((album) => (
                   <Button
@@ -68,7 +63,7 @@ export default function PhotoNewDialog({ trigger }: PhotoNewDialogProps) {
                   </Button>
                 ))}
 
-              {isLoadingAlbum &&
+              {isLoadingAlbums &&
                 Array.from({ length: 5 }).map((_, index) => (
                   <Skeleton
                     key={`album-loading-${index}`}
