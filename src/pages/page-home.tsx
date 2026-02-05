@@ -3,9 +3,11 @@ import PhotosList from "../contexts/photos/components/photos-list";
 import Container from "../components/container";
 
 import useAlbums from "../contexts/albums/hooks/use-albums";
+import usePhotos from "../contexts/photos/hooks/use-photos";
 
 export default function PageHome() {
   const { albums, isLoadingAlbums } = useAlbums();
+  const { photos, isLoadingPhotos } = usePhotos();
 
   return (
     <Container>
@@ -14,20 +16,7 @@ export default function PageHome() {
         loading={isLoadingAlbums}
         className="mb-9"
       />
-      <PhotosList
-        photos={[
-          {
-            id: "123",
-            title: "Test",
-            imageId: "portrait-tower.png",
-            albums: [
-              { id: "123", title: "Album 1" },
-              { id: "1234", title: "Album 2" },
-              { id: "1235", title: "Album 3" },
-            ],
-          },
-        ]}
-      />
+      <PhotosList photos={photos} loading={isLoadingPhotos} />
     </Container>
   );
 }

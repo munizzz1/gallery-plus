@@ -16,25 +16,14 @@ import {
 import SelectCheckboxIllustration from "../../../assets/images/select-checkbox.svg?react";
 
 import type { Photo } from "../../photos/models/photo";
+import usePhotos from "../../photos/hooks/use-photos";
 
 interface AlbumNewDialogProps {
   trigger: React.ReactNode;
 }
 
 export default function AlbumNewDialog({ trigger }: AlbumNewDialogProps) {
-  const isLoadingPhotos = false;
-  const photos: Photo[] = [
-    {
-      id: "123",
-      title: "Test",
-      imageId: "portrait-tower.png",
-      albums: [
-        { id: "123", title: "Album 1" },
-        { id: "1234", title: "Album 2" },
-        { id: "1235", title: "Album 3" },
-      ],
-    },
-  ];
+  const { photos, isLoadingPhotos } = usePhotos();
 
   function handleTogglePhoto(selected: boolean, photoId: string) {
     console.log(selected, photoId);
@@ -59,7 +48,7 @@ export default function AlbumNewDialog({ trigger }: AlbumNewDialogProps) {
                 {photos.map((photo) => (
                   <PhotoImageSelectable
                     key={photo.id}
-                    src={`/images/${photo.imageId}`}
+                    src={`${import.meta.env.VITE_IMAGES_URL}/${photo.imageId}`}
                     title={photo.title}
                     imageClassName="w-20 h-20 roundend"
                     onSelectImage={(selected) =>
