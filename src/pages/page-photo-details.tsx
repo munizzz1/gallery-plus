@@ -1,7 +1,10 @@
 import { useParams } from "react-router";
 
-import { AlbumsListSelectable } from "../contexts/albums/components/albums-list-selectable";
+import type { Photo } from "../contexts/photos/models/photo";
+import useAlbums from "../contexts/albums/hooks/use-albums";
+import usePhoto from "../contexts/photos/hooks/use-photo";
 
+import { AlbumsListSelectable } from "../contexts/albums/components/albums-list-selectable";
 import PhotosNavigator from "../contexts/albums/components/photos-navigator";
 import ImagePreview from "../components/image-preview";
 import Container from "../components/container";
@@ -9,35 +12,34 @@ import Skeleton from "../components/skeleton";
 import Button from "../components/button";
 import Text from "../components/text";
 
-import useAlbums from "../contexts/albums/hooks/use-albums";
-import usePhotos from "../contexts/photos/hooks/use-photos";
-
 export default function PagePhotoDetails() {
   const { id } = useParams();
+  const { photo, isLoadingPhoto } = usePhoto(id);
   const { albums, isLoadingAlbums } = useAlbums();
-  const { photos, isLoadingPhotos } = usePhotos();
 
-  const photo = photos.filter((p) => p.id === id);
+  if (!isLoadingPhoto && !photo) {
+    return <div>Foto não encontrada!</div>;
+  }
 
   return (
     <Container>
       <header className="flex items-center justify-between gap-8 mb-8">
-        {!isLoadingPhotos && photo ? (
-          <Text variant="heading-large">{photo[0]?.title}</Text>
+        {!isLoadingPhoto && photo ? (
+          <Text variant="heading-large">{photo?.title}</Text>
         ) : (
           <Skeleton className="w-48 h-8" />
         )}
 
-        <PhotosNavigator loading={isLoadingPhotos} />
+        <PhotosNavigator loading={isLoadingPhoto} />
       </header>
 
       <div className="grid grid-cols-[21rem_1fr] gap-24">
         <div className="space-y-3">
-          {!isLoadingPhotos ? (
+          {!isLoadingPhoto ? (
             <>
               <ImagePreview
-                src={`${import.meta.env.VITE_IMAGES_URL}/${photo[0]?.imageId}`}
-                title={photo[0]?.title}
+                src={`${import.meta.env.VITE_IMAGES_URL}/${photo?.imageId}`}
+                title={photo?.title}
                 imageClassName="h-[21rem]"
               />
 
@@ -59,7 +61,7 @@ export default function PagePhotoDetails() {
           <AlbumsListSelectable
             loading={isLoadingAlbums}
             albums={albums}
-            photo={photo[0]}
+            photo={photo as Photo}
           />
         </div>
       </div>
