@@ -14,7 +14,7 @@ import Text from "../components/text";
 
 export default function PagePhotoDetails() {
   const { id } = useParams();
-  const { photo, isLoadingPhoto } = usePhoto(id);
+  const { photo, previousPhotoId, nextPhotoId, isLoadingPhoto } = usePhoto(id);
   const { albums, isLoadingAlbums } = useAlbums();
 
   if (!isLoadingPhoto && !photo) {
@@ -30,7 +30,11 @@ export default function PagePhotoDetails() {
           <Skeleton className="w-48 h-8" />
         )}
 
-        <PhotosNavigator loading={isLoadingPhoto} />
+        <PhotosNavigator
+          previousPhotoId={previousPhotoId}
+          nextPhotoId={nextPhotoId}
+          loading={isLoadingPhoto}
+        />
       </header>
 
       <div className="grid grid-cols-[21rem_1fr] gap-24">

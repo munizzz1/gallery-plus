@@ -24,7 +24,7 @@ export function DialogOverlay({
         data-[state=close]:animate-out
         data-[state=open]:fade-in-0
         data-[state=close]:fade-out-0`,
-        className
+        className,
       )}
       {...props}
     />
@@ -51,7 +51,7 @@ export function DialogContent({
           data-[state=close]:animate-out
           data-[state=close]:fade-out-0
           data-[state=closed]:slide-out-to-bottom-[48%]`,
-          className
+          className,
         )}
         {...props}
       >
