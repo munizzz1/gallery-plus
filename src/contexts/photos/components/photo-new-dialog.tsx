@@ -1,9 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import InputSingleFile from "../../../components/input-single-file";
 import ImagePreview from "../../../components/image-preview";
 import InputText from "../../../components/input-text";
+import Skeleton from "../../../components/skeleton";
 import Button from "../../../components/button";
 import Alert from "../../../components/alert";
 import Text from "../../../components/text";
@@ -16,7 +18,6 @@ import {
   DialogHeader,
   DialogTrigger,
 } from "../../../components/dialog";
-import Skeleton from "../../../components/skeleton";
 
 import { PhotoNewFormSchema, type PhotoNewFormData } from "../schemas";
 import useAlbums from "../../albums/hooks/use-albums";
@@ -26,6 +27,8 @@ interface PhotoNewDialogProps {
 }
 
 export default function PhotoNewDialog({ trigger }: PhotoNewDialogProps) {
+  const [modalOpen, setModalOpen] = useState(false);
+
   const form = useForm<PhotoNewFormData>({
     resolver: zodResolver(PhotoNewFormSchema),
   });
@@ -38,8 +41,28 @@ export default function PhotoNewDialog({ trigger }: PhotoNewDialogProps) {
   const file = form.watch("file");
   const fileSource = file?.[0] ? URL.createObjectURL(file[0]) : undefined;
 
+  const albumsIds = form.watch("albumsIds") || [];
+
+  useEffect(() => {
+    if (!modalOpen) {
+      form.reset();
+    }
+  }, [modalOpen, form]);
+
+  function handleToggleAlbumSelection(albumId: string) {
+    const albumsIds = form.getValues("albumsIds") || [];
+    const albumsSet = new Set(albumsIds);
+
+    if (albumsSet.has(albumId)) {
+      albumsSet.delete(albumId);
+    } else {
+      albumsSet.add(albumId);
+    }
+    form.setValue("albumsIds", Array.from(albumsSet));
+  }
+
   return (
-    <Dialog>
+    <Dialog open={modalOpen} onOpenChange={setModalOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent>
         <form onSubmit={form.handleSubmit(handleSubmit)}>
@@ -76,9 +99,12 @@ export default function PhotoNewDialog({ trigger }: PhotoNewDialogProps) {
                   albums.map((album) => (
                     <Button
                       key={album.id}
-                      variant="ghost"
+                      variant={
+                        albumsIds?.includes(album.id) ? "primary" : "ghost"
+                      }
                       size="sm"
                       className="truncate"
+                      onClick={() => handleToggleAlbumSelection(album.id)}
                     >
                       {album.title}
                     </Button>
