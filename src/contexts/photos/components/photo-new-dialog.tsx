@@ -1,5 +1,5 @@
+import { useEffect, useState, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import InputSingleFile from "../../../components/input-single-file";
@@ -21,6 +21,7 @@ import {
 
 import { PhotoNewFormSchema, type PhotoNewFormData } from "../schemas";
 import useAlbums from "../../albums/hooks/use-albums";
+import usePhoto from "../hooks/use-photo";
 
 interface PhotoNewDialogProps {
   trigger: React.ReactNode;
@@ -28,14 +29,24 @@ interface PhotoNewDialogProps {
 
 export default function PhotoNewDialog({ trigger }: PhotoNewDialogProps) {
   const [modalOpen, setModalOpen] = useState(false);
+  const [isCreatingPhoto, setIsCreatingPhoto] = useTransition();
 
   const form = useForm<PhotoNewFormData>({
     resolver: zodResolver(PhotoNewFormSchema),
   });
+
   const { albums, isLoadingAlbums } = useAlbums();
+  const { createPhoto } = usePhoto();
 
   function handleSubmit(payload: PhotoNewFormData) {
-    console.log(payload);
+    setIsCreatingPhoto(async () => {
+      try {
+        await createPhoto(payload);
+        setModalOpen(false);
+      } catch (error) {
+        console.error("Error creating photo:", error);
+      }
+    });
   }
 
   const file = form.watch("file");
@@ -123,9 +134,17 @@ export default function PhotoNewDialog({ trigger }: PhotoNewDialogProps) {
 
           <DialogFooter>
             <DialogClose asChild>
-              <Button variant="secondary">Cancelar</Button>
+              <Button disabled={isCreatingPhoto} variant="secondary">
+                Cancelar
+              </Button>
             </DialogClose>
-            <Button type="submit">Adicionar</Button>
+            <Button
+              disabled={isCreatingPhoto}
+              handling={isCreatingPhoto}
+              type="submit"
+            >
+              {isCreatingPhoto ? "Adicionando..." : "Adicionar"}
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>
