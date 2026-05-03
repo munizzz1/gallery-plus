@@ -3,6 +3,7 @@ import { toast } from "sonner";
 
 import { api, fetcher } from "../../../helpers/api";
 import type { PhotoNewFormData } from "../schemas";
+import usePhotoAlbums from "./use-photo-albums";
 import type { Photo } from "../models/photo";
 
 interface PhotoDetailResponse extends Photo {
@@ -18,6 +19,7 @@ export default function usePhoto(id?: string) {
   });
 
   const queryClient = useQueryClient();
+  const { managePhotoAlbum } = usePhotoAlbums();
 
   async function createPhoto(payload: PhotoNewFormData) {
     try {
@@ -32,9 +34,7 @@ export default function usePhoto(id?: string) {
       );
 
       if (payload.albumsIds && payload.albumsIds.length > 0) {
-        await api.put(`/photos/${photo.id}/albums`, {
-          albumsIds: payload.albumsIds,
-        });
+        await managePhotoAlbum(photo.id, payload.albumsIds);
       }
 
       queryClient.invalidateQueries({ queryKey: ["photos"] });
